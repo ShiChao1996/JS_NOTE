@@ -8,7 +8,7 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: path.join(__dirname, 'es6'),
+        test: path.join(__dirname, 'codeSegment'),
         loader: 'babel-loader',
         query: {
           presets: ['es2015']

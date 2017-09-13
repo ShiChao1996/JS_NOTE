@@ -33,5 +33,4 @@ function partAdd(arr, index, value) {
     }
 }
 
-console.log(bigNumMultiply('32432324', '34321433234234'))
-
+console.log(bigNumMultiply('2324132423424231423147897896987890987654432423423', '839790740987908789070987870987678'))
