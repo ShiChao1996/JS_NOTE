@@ -77,5 +77,17 @@ function flatArr_5(arr) {
     return arr;
 }
 
+// JSON.stringify 包含对象有些许问题
+function flatArr_6(arr) {
+    let result = []
+    JSON.stringify(arr, function(key) {
+        let value = this[key];
+        if (!(value instanceof Array)) result.push(value);
+        return value;
+    })
+    return result;
+}
+
+
 //console.log(arr)
-console.log(flatArr_5(arr))
+console.log(flatArr_6(arr))
