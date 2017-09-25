@@ -14,7 +14,6 @@ let tar3 = Array.from(src)
 
 let temp = []
 let tar4 = Array.prototype.push.apply(temp, src)        //seems to have some problems
-
 let tar5 = [...src]
 
 // 深拷贝
@@ -31,3 +30,18 @@ let copy = require('./deepCopy')
 let target1 = copy(src)
 
 console.log(src, target1)
+
+//method 3
+function deepCopy1(arry1, arry2){
+    var tempArry =[];
+    for(var i = 0,l= arry1.length;i<l;i++) {
+        //判断每一项是不是一个数组
+        if (arry1[i] instanceof Array ) {
+            deepCopy1(arry1[i], tempArry)
+            arry2[i] = tempArry;
+        }
+        else {
+            arry2[i] = arry1[i];
+        }
+    }
+}
