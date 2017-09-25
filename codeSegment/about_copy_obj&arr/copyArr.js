@@ -32,12 +32,12 @@ let target1 = copy(src)
 console.log(src, target1)
 
 //method 3
-function deepCopy1(arry1, arry2){
+function deepCopy(arry1, arry2){
     var tempArry =[];
     for(var i = 0,l= arry1.length;i<l;i++) {
         //判断每一项是不是一个数组
         if (arry1[i] instanceof Array ) {
-            deepCopy1(arry1[i], tempArry)
+            deepCopy(arry1[i], tempArry)
             arry2[i] = tempArry;
         }
         else {
@@ -45,3 +45,26 @@ function deepCopy1(arry1, arry2){
         }
     }
 }
+
+var b = [[1,2,3],4,5];
+var c = [[1,[2,3]],4,5];
+var d = [[1,2,3],4,[5,6,7]];
+var deepArray = [];
+
+deepCopy(b, deepArry);
+console.log(deepArry);
+deepArry[0][0] =9;   //修改deepArry的值
+console.log(b);
+console.log(deepArry);
+
+deepArry.length=0;   //初始化deepArray
+deepCopy(d,deepArry);
+console.log(deepArry);
+
+deepArry.length=0;
+deepCopy(c,deepArry);
+console.log(c);
+console.log(deepArry);
+deepArry[0][1][0] = 99;
+console.log(c);
+console.log(deepArry);
