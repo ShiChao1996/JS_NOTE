@@ -1,76 +1,13 @@
+/*
+*  created by Lovae 2017/11/08
+* */
+
 let fs = require('fs');
+let { decode, encode } = require('./common');
+let HufuTree = require('./huff_tree')
+let { getFile, resolveStr, StrTool } = require('./tool')
 
-function getFile(filePath) {
-  return new Promise(function (resolve, reject) {
-    fs.readFile(filePath, 'utf8', function (err, data) {
-      if (!err) {
-        resolve(data)
-      }
-      reject();
-    })
-  })
-}
-
-function resolveStr(str) {
-  let length = str.length;
-  let obj = {};
-  for (let i = 0; i < length; i++) {
-    let cur = str[ i ];
-    obj[ cur ] = obj[ str[ i ] ] === undefined ? 1 : obj[ str[ i ] ] + 1;
-  }
-  return obj;
-}
-
-function HufuTree(arr) {
-  this.arr = arr;
-  this.root = null;
-  this.len = arr.length;
-}
-
-function Node(data) {
-  this.data = data;
-  this.left = null;
-  this.right = null;
-}
-
-HufuTree.prototype.createHufuTree = function () {
-  let nodes = [];
-  /*初始化结点*/
-  for (let i = 0; i < this.arr.length; i++) {
-    nodes.push(new Node(this.arr[ i ]));
-  }
-  while (nodes.length > 1) {
-    nodes.sort(function (a, b) {
-      return a.data.value - b.data.value;
-    });
-    let one = nodes.shift();
-    let two = nodes.shift();
-    let sum = Number(one.data.value) + Number(two.data.value);
-    /*构造结点*/
-    let root = new Node({ value: sum });
-    root.left = one;
-    root.right = two;
-    nodes.unshift(root);
-  }
-  this.root = nodes[ 0 ];
-};
-
-HufuTree.prototype.showTree = function (root) {
-  let arr = [ root ];
-  let cur;
-  while (arr.length !== 0) {
-    cur = arr.shift();
-    console.log(cur.data);
-    if (cur.left) {
-      arr.push(cur.left)
-    }
-    if (cur.right) {
-      arr.push(cur.right)
-    }
-  }
-};
-
-function setCode(content, root) {
+function setCode(content, root) { //转换成0-1串
   let code = {};
   for (let i = 0, len = content.length; i < len; i++) {
     let char = content[ i ];
@@ -128,43 +65,7 @@ function zip(content, code) {
   return zippedStr;
 }
 
-const encode = {
-  '0000': '0',
-  '0001': '1',
-  '0010': '2',
-  '0011': '3',
-  '0100': '4',
-  '0101': '5',
-  '0110': '6',
-  '0111': '7',
-  '1000': '8',
-  '1001': '9',
-  '1010': 'a',
-  '1011': 'b',
-  '1100': 'c',
-  '1101': 'd',
-  '1110': 'e',
-  '1111': 'f'
-}
 
-let decode = {
-  '0': '0000',
-  '1': '0001',
-  '2': '0010',
-  '3': '0011',
-  '4': '0100',
-  '5': '0101',
-  '6': '0110',
-  '7': '0111',
-  '8': '1000',
-  '9': '1001',
-  a: '1010',
-  b: '1011',
-  c: '1100',
-  d: '1101',
-  e: '1110',
-  f: '1111'
-}
 
 let propertyArr = []
 
@@ -189,7 +90,7 @@ function zipFile(path, target) {
     .then(obj => {    //construct tree
       let tr = new HufuTree(obj.arr);
       tr.createHufuTree();
-      //tr.showTree(tr.root);
+      tr.showTree(tr.root);
       return {
         content: obj.content,
         code: setCode(obj.content, tr.root)
@@ -223,7 +124,7 @@ function unzipFile(path) {
       let infoStr = content.slice(0, dividIdex)
       let zippedStr = content.slice(dividIdex + 8)
 
-      let seg = ''
+      let seg = '';
       for (let i = 0, len = zippedStr.length; i < len; i++) {
         seg = zippedStr.charCodeAt(i).toString(16);
         seg = seg.length === 2 ? seg : '0' + seg;
@@ -285,21 +186,9 @@ function unzipFile(path) {
 }
 
 
-function StrTool(str) {
-  this.index = 0;
-  this.str = str;
-  this.len = str.length;
-}
 
-StrTool.prototype.nextChar = function () {
-  let next = this.str[ this.index ];
-  this.index += 1;
-  return next;
-};
-StrTool.prototype.hasNext = function () {
-  return this.index < this.len;
-};
+//zipFile('test.txt')
+unzipFile('zipped.txt');
 
-//zipFile('test')
-unzipFile('zipped.txt')
-
+getFile('zipped.txt').then(d => console.log('zipped',  d.length))
+getFile('unzipped.txt').then(d => console.log('unzipped', d.length))
