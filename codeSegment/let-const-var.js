@@ -96,3 +96,13 @@
 // bar();
 
 // 2
+
+// var x = 1;
+// function foo(x, y = function() { x = 2; }) {
+//   var x = 3;
+//   y();
+//   return x;
+// }
+
+// console.log(foo());
+// console.log(x);
