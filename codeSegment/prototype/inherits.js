@@ -34,15 +34,18 @@ function inherits(sub, sup) {
   sub.prototype = new Temp();
 }
 
-function A() {}
-A.prototype.name = "super";
+function A() {
+  this.a = 1;
+  this.b = 2;
+  console.log(this)
+}
 A.prototype.say = function () {
-  console.log(this.name)
+  console.log(this)
 };
 let a = new A();
-console.log("A: ", a.name);
-
-
+a.say();
+console.log(this);
+/*
 function B() {
   this.age = 10;
 }
@@ -51,7 +54,7 @@ inherits(B, A); // B inherits from A
 
 let b = new B();
 b.say();
-console.log(b.age);
+console.log(b.age);*/
 
 
 exports.inherits = inherits;
