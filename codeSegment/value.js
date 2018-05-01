@@ -11,4 +11,4 @@
 
 // console.log(Object.is(-0, 0)); // false
 // console.log([][[]] === [][0]); // true
-console.log(([][[]] + '')[[] + 0] === "u");
+// console.log(([][[]] + '')[[] + 0] === "u");
