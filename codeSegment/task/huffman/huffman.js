@@ -188,8 +188,8 @@ function unzipFile(path) {
 
 
 
-zipFile('test.txt')
-//unzipFile('zipped.txt');
+//zipFile('test.txt')
+unzipFile('zipped.txt');
 
-getFile('zipped.txt').then(d => console.log('zipped',  d.length))
-getFile('unzipped.txt').then(d => console.log('unzipped', d.length))
+getFile('zipped.txt').then(d => console.log('压缩后长度： ',  d.length))
+getFile('unzipped.txt').then(d => console.log('原始长度： ', d.length))

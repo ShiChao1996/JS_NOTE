@@ -7,6 +7,7 @@ process.on('message', function (m, server) {
     })
   }
 })*/
+/*
 
 let http = require('http');
 let server = http.createServer(function (req, res) {
@@ -20,4 +21,14 @@ process.on('message', function (m, tcp) {
       server.emit('connection', socket)
     })
   }
-})
+})*/
+
+process.on('message', (msg) => {
+  console.log('Message from parent:', msg);
+});
+
+let counter = 0;
+
+setInterval(() => {
+  process.send({ counter: counter++ });
+}, 1000);
